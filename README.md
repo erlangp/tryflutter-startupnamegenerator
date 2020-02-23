@@ -1,4 +1,4 @@
-# flutter_app_2020_01_27
+# tryflutter_startupnamegenerator
 
 A new Flutter application.
 

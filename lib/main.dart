@@ -9,6 +9,7 @@ import 'package:flutter/foundation.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,10 +20,13 @@ class MyApp extends StatelessWidget {
 }
 
 class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
+
   final _suggestions = <WordPair>[];
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   AppLifecycleState _lastLifecycleState;
+
+  // --------------------------------------------------------------------------
 
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -41,13 +45,13 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
   Widget _buildRow(int index, WordPair pair) {
     return ListTile(
       title: Text(
-        index.toString() + ". " + pair.asPascalCase,
+        (index + 1).toString() + ". " + pair.asPascalCase,
         style: _biggerFont,
       ),
     );
   }
 
-// ------------------------------------
+  // --------------------------------------------------------------------------
 
   @override
   void initState() {
@@ -68,9 +72,11 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
     });
   }
 
+  // --------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
-    debugPrint('movieTitle: $_lastLifecycleState');
+    debugPrint('lastLifecycleState: $_lastLifecycleState');
 
     return Scaffold(
       appBar: AppBar(
@@ -82,6 +88,7 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
 }
 
 class RandomWords extends StatefulWidget {
+
   @override
   RandomWordsState createState() => RandomWordsState();
 }

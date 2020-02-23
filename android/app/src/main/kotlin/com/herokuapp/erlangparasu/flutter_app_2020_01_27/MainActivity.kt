@@ -1,4 +1,4 @@
-package com.herokuapp.erlangparasu.flutter_app_2020_01_27
+package com.herokuapp.erlangparasu.tryflutter_startupnamegenerator
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
