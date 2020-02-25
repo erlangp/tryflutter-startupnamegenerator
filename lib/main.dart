@@ -11,7 +11,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
 }
 
 class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
-
   final List<WordPair> _suggestions = <WordPair>[];
   final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
   final Set<WordPair> _saved = Set<WordPair>();
@@ -54,6 +52,14 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: Text('Startup Name Generator'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: () {
+              _pushSaved();
+            },
+          )
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -61,15 +67,49 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
 
   // --------------------------------------------------------------------------
 
+  void _pushSaved() {
+    var navigator = Navigator.of(context);
+    navigator.push(
+      MaterialPageRoute(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> tiles = _saved.map((WordPair pair) {
+            return ListTile(
+              title: Text(
+                pair.asPascalCase,
+                style: _biggerFont,
+              ),
+            );
+          });
+
+          final List<Widget> divided = ListTile.divideTiles(
+            context: context,
+            tiles: tiles,
+          ).toList();
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Saved Suggestions'),
+            ),
+            body: ListView(
+              children: divided,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildSuggestions() {
     return ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemBuilder: /*1*/ (context, i) {
-          if (i.isOdd) return Divider(); /*2*/
+        itemBuilder: (context, i) {
+          if (i.isOdd) {
+            return Divider();
+          }
 
-          final index = i ~/ 2; /*3*/
+          final index = i ~/ 2;
           if (index >= _suggestions.length) {
-            _suggestions.addAll(generateWordPairs().take(10)); /*4*/
+            _suggestions.addAll(generateWordPairs().take(10));
           }
 
           return _buildRow(index, _suggestions[index]);
@@ -81,12 +121,12 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
 
     return ListTile(
       title: Text(
-        (index + 1).toString() + ". " + pair.asPascalCase,
+        (index + 1).toString() + '. ' + pair.asPascalCase,
         style: _biggerFont,
       ),
       trailing: Icon(
         isAlreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: isAlreadySaved ? Colors.red : null
+        color: isAlreadySaved ? Colors.red : Colors.black,
       ),
       onTap: () {
         setState(() {
@@ -102,7 +142,8 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
 }
 
 class RandomWords extends StatefulWidget {
-
   @override
-  RandomWordsState createState() => RandomWordsState();
+  RandomWordsState createState() {
+    return RandomWordsState();
+  }
 }
