@@ -5,6 +5,7 @@ abstract class LoginState extends Equatable {
   final int version;
 
   final List propss;
+
   LoginState(this.version, [this.propss]);
 
   /// Copy object for use in action
@@ -19,7 +20,9 @@ abstract class LoginState extends Equatable {
 
 /// UnInitialized
 class UnLoginState extends LoginState {
-  UnLoginState(int version) : super(version);
+  UnLoginState(
+    int version,
+  ) : super(version);
 
   @override
   String toString() => 'UnLoginState';
@@ -39,7 +42,10 @@ class UnLoginState extends LoginState {
 class InLoginState extends LoginState {
   final String hello;
 
-  InLoginState(int version, this.hello) : super(version, [hello]);
+  InLoginState(
+    int version,
+    this.hello,
+  ) : super(version, [hello]);
 
   @override
   String toString() => 'InLoginState $hello';
@@ -58,8 +64,10 @@ class InLoginState extends LoginState {
 class ErrorLoginState extends LoginState {
   final String errorMessage;
 
-  ErrorLoginState(int version, this.errorMessage)
-      : super(version, [errorMessage]);
+  ErrorLoginState(
+    int version,
+    this.errorMessage,
+  ) : super(version, [errorMessage]);
 
   @override
   String toString() => 'ErrorLoginState';

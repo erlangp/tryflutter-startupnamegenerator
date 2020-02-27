@@ -6,28 +6,37 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class LoginEvent {
-  Future<LoginState> applyAsync({LoginState currentState, LoginBloc bloc});
   final LoginRepository _loginRepository = LoginRepository();
+
+  Future<LoginState> applyAsync({
+    LoginState currentState,
+    LoginBloc bloc,
+  });
 }
 
 class UnLoginEvent extends LoginEvent {
   @override
-  Future<LoginState> applyAsync(
-      {LoginState currentState, LoginBloc bloc}) async {
+  Future<LoginState> applyAsync({
+    LoginState currentState,
+    LoginBloc bloc,
+  }) async {
     return UnLoginState(0);
   }
 }
 
 class LoadLoginEvent extends LoginEvent {
   final bool isError;
-  @override
-  String toString() => 'LoadLoginEvent';
 
   LoadLoginEvent(this.isError);
 
   @override
-  Future<LoginState> applyAsync(
-      {LoginState currentState, LoginBloc bloc}) async {
+  String toString() => 'LoadLoginEvent';
+
+  @override
+  Future<LoginState> applyAsync({
+    LoginState currentState,
+    LoginBloc bloc,
+  }) async {
     try {
       if (currentState is InLoginState) {
         return currentState.getNewVersion();
@@ -36,8 +45,12 @@ class LoadLoginEvent extends LoginEvent {
       this._loginRepository.test(this.isError);
       return InLoginState(0, 'Hello world');
     } catch (_, stackTrace) {
-      developer.log('$_',
-          name: 'LoadLoginEvent', error: _, stackTrace: stackTrace);
+      developer.log(
+        '$_',
+        name: 'LoadLoginEvent',
+        error: _,
+        stackTrace: stackTrace,
+      );
       return ErrorLoginState(0, _?.toString());
     }
   }

@@ -6,12 +6,15 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _loginBloc = LoginBloc();
+    var loginBloc = LoginBloc();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: LoginScreen(loginBloc: _loginBloc),
+      body: LoginScreen(
+        loginBloc: loginBloc,
+      ),
     );
   }
 }

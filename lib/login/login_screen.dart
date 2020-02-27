@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tryflutter_startupnamegenerator/login/index.dart';
 
 class LoginScreen extends StatefulWidget {
+  final LoginBloc _loginBloc;
+
   const LoginScreen({
     Key key,
     @required LoginBloc loginBloc,
   })  : _loginBloc = loginBloc,
         super(key: key);
-
-  final LoginBloc _loginBloc;
 
   @override
   LoginScreenState createState() {
@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final LoginBloc _loginBloc;
+
   LoginScreenState(this._loginBloc);
 
   @override
@@ -29,60 +30,78 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    this._unload();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginState>(
-        bloc: widget._loginBloc,
-        builder: (
-          BuildContext context,
-          LoginState currentState,
-        ) {
-          if (currentState is UnLoginState) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (currentState is ErrorLoginState) {
-            return Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(currentState.errorMessage ?? 'Error'),
-                Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
-                  child: RaisedButton(
-                    color: Colors.blue,
-                    child: Text('reload'),
-                    onPressed: () => this._load(),
-                  ),
-                ),
-              ],
-            ));
-          }
+      bloc: widget._loginBloc,
+      builder: (
+        BuildContext context,
+        LoginState currentState,
+      ) {
+        if (currentState is UnLoginState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (currentState is ErrorLoginState) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Flutter files: done'),
+                Text(currentState.errorMessage ?? 'Error'),
                 Padding(
-                  padding: const EdgeInsets.only(top: 32.0),
+                  padding: const EdgeInsets.only(
+                    top: 32.0,
+                  ),
                   child: RaisedButton(
-                    color: Colors.red,
-                    child: Text('throw error'),
-                    onPressed: () => this._load(true),
+                    color: Colors.blue,
+                    child: Text('reload'),
+                    onPressed: () {
+                      this._load();
+                    },
                   ),
                 ),
               ],
             ),
           );
-        });
+        }
+
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text('Flutter files: done'),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 32.0,
+                ),
+                child: RaisedButton(
+                  color: Colors.red,
+                  child: Text('throw error'),
+                  onPressed: () {
+                    this._load(true);
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+
+      },
+    );
   }
 
   void _load([bool isError = false]) {
     widget._loginBloc.add(UnLoginEvent());
     widget._loginBloc.add(LoadLoginEvent(isError));
+  }
+
+  void _unload() {
+    _loginBloc.close();
   }
 }
