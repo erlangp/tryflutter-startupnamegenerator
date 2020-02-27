@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/foundation.dart';
 
+import 'login/login_page.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -60,6 +62,18 @@ class RandomWordsState extends State<RandomWords> with WidgetsBindingObserver {
             icon: Icon(Icons.list),
             onPressed: () {
               _pushSaved();
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return LoginPage();
+                  },
+                ),
+              );
             },
           )
         ],
